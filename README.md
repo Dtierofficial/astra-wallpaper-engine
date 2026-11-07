@@ -7,7 +7,7 @@
 - **Author:** DtieR
 - **License:** MIT (third-party notices in `ui/legal/NOTICE.md`)
 - **Languages:** English & Russian in a single package (automatically follows Astra's language, with a manual switcher in the header)
-- **Platforms:** Windows x64 (with native window-visibility helper) & Linux x64 (`noarch` bundle)
+- **Platform:** Windows 10/11 x64 (the bundle target is `noarch` because it contains a small Windows window-visibility helper)
 
 ---
 
