@@ -49,6 +49,17 @@ Its original NOTICE is reproduced in the complete license text below, including 
 
 Complete license and notice texts: [THIRD-PARTY-LICENSES.txt](THIRD-PARTY-LICENSES.txt).
 
-Build-only tools (Node.js, .NET SDK and reference assemblies, esbuild, Playwright, Bun) are not redistributed as plugin runtimes. The native helper is built from this repository's C# source.
+## Bundled Node.js runtime
+
+Node.js 24.22.2 for Windows x64 is redistributed unmodified from the official Node.js release.
+It is licensed under MIT with additional third-party terms for compiled-in components.
+The complete upstream notice is included in [NODE-LICENSE.txt](NODE-LICENSE.txt).
+Binary source: https://nodejs.org/dist/v24.22.2/win-x64/node.exe
+SHA-256: `1c331340fa6cac5e4294725959070a143fa0507195a78ad77eed7943f719aac9`.
+Source code: https://github.com/nodejs/node/tree/v24.22.2
+The pinned download metadata is also included in `dist/runtime/runtime.json`.
+Nothing is downloaded or installed at plugin startup, and no system Node.js installation is changed.
+
+Build-only tools (.NET SDK and reference assemblies, esbuild, Playwright, Bun) are not redistributed as plugin runtimes. The native helper is built from this repository's C# source and uses the Windows .NET Framework 4.8 runtime.
 
 Wallpaper Engine, Steam, Astra and Minice are names of their respective owners. This independent integration is not an official product or endorsement. No wallpaper files or proprietary Astra source are bundled.

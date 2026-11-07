@@ -24,7 +24,7 @@ test('native monitor observes a test window minimize, restore, hide and exit', {
   execFileSync(compiler,['/nologo','/target:winexe','/reference:System.Windows.Forms.dll',`/out:${binary}`,source],{windowsHide:true});
   const transitions=[];
   let fixture;
-  const monitor=startWindowMonitor(path.resolve('dist/window-monitor.exe'),s=>transitions.push(s.visible));
+  const monitor=startWindowMonitor(path.resolve(process.env.ASTRA_WE_PLUGIN_DIR||'.','dist/window-monitor.exe'),s=>transitions.push(s.visible));
   try{
     fixture=spawn(binary,[],{stdio:'ignore'});
     await new Promise((resolve,reject)=>{fixture.on('error',reject);fixture.on('exit',resolve);});

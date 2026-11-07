@@ -7,3 +7,5 @@
 *.webm binary
 *.exe binary
 *.astraplugin binary
+# Preserve the complete upstream Node license byte-for-byte (hash pinned).
+ui/legal/NODE-LICENSE.txt whitespace=-space-before-tab

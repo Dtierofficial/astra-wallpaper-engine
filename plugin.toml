@@ -1,7 +1,7 @@
 [plugin]
 id = "wallpaper-engine"
 name = "Wallpaper Engine for Astra"
-version = "1.1.1"
+version = "1.1.2"
 description = "Browse installed Wallpaper Engine wallpapers in English or Russian. Play video, images and experimental Web wallpapers inside Astra."
 author = "DtieR"
 license = "MIT"
@@ -10,9 +10,9 @@ min_astra_version = "0.2.7"
 call_timeout_secs = 60
 
 [entry]
-command = "node"
+command = "./dist/runtime/node.exe"
 args = ["dist/index.js"]
-runtimes = ["node"]
+runtimes = []
 
 [capabilities]
 ui_contributions = true
@@ -37,9 +37,9 @@ schema = """
 
 [platform]
 os = ["windows"]
-arch = []
+arch = ["x86_64"]
 
 [bundle]
 schema = "astra.bundle/2"
 target = "noarch"
-executables = ["dist/window-monitor.exe"]
+executables = ["dist/runtime/node.exe", "dist/window-monitor.exe"]

@@ -5,9 +5,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const os = require('node:os');
 const http = require('node:http');
+const assetType=file=>({'.js':'application/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.html':'text/html'})[path.extname(file)]||'application/octet-stream';
 
 async function main() {
   const bridgePath = path.resolve(process.env.ASTRA_WE_BRIDGE_FIXTURE||'test/fixtures/astra-bridge.js');
+  const pluginRoot=path.resolve(process.env.ASTRA_WE_PLUGIN_DIR||'.');
+  const uiRoot=path.join(pluginRoot,'ui');
+  const backend=process.env.ASTRA_WE_PLUGIN_DIR?path.join(pluginRoot,'dist/index.js'):path.join(pluginRoot,'src/index.js');
   if (!fs.existsSync(bridgePath)) throw Error('Bridge test fixture missing');
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'we-e2e-'));
   process.env.ASTRA_WE_DATA_DIR = path.join(root, 'prefs');
@@ -53,8 +57,8 @@ async function main() {
     const pixel=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jZ1kAAAAASUVORK5CYII=','base64');
     fs.writeFileSync(path.join(imageFolder,'image.png'),pixel);
     fs.writeFileSync(path.join(imageFolder,'project.json'),JSON.stringify({title:'Image fixture',type:'image',file:'image.png',preview:'image.png'}));
-    ({app} = require('../src/index'));
-    const {call} = require('../src/index');
+    ({app} = require(backend));
+    const {call} = require(backend);
     const {Harness} = require('astra-plugin-sdk/testing');
     harness = await Harness.create(app).start();
     await app.definition.onLanguageChanged('en');
@@ -73,9 +77,9 @@ async function main() {
       const url = new URL(route.request().url());
       let file;
       if (url.pathname==='/bridge/astra-bridge.js') file=bridgePath;
-      else if(url.pathname.startsWith('/wallpaper-engine/')) file=path.resolve('ui',url.pathname.slice('/wallpaper-engine/'.length));
+      else if(url.pathname.startsWith('/wallpaper-engine/')) file=path.resolve(uiRoot,url.pathname.slice('/wallpaper-engine/'.length));
       if(!file || !fs.existsSync(file)) return route.fulfill({status:200,contentType:'text/css',body:''});
-      const contentType=file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':'text/html';
+      const contentType=assetType(file);
       await route.fulfill({path:file,contentType});
     });
     // Controlled replay of our own generated files only. Chromium's newest
@@ -88,15 +92,15 @@ async function main() {
         const isVideo=relative[2]==='video',isImage=relative[2]==='image';
         return route.fulfill({contentType:isVideo?'video/webm':isImage?'image/png':'image/svg+xml',body:isVideo?Buffer.from(media):isImage?pixel:svg});
       }
-      const file=path.resolve('ui',relative.join('/'));
+      const file=path.resolve(uiRoot,relative.join('/'));
       if(!fs.existsSync(file))return route.fulfill({status:404,body:''});
-      return route.fulfill({path:file,contentType:file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':'text/html'});
+      return route.fulfill({path:file,contentType:assetType(file)});
     });
     // A real local server is required here: request interception on a fake
     // hostname does not establish its network address space. No LNA/CORS
     // permission is overridden and browser security stays enabled.
     for(const name of ['index.html','background.html'])await page.route(base+name,async route=>{
-      const html=fs.readFileSync(path.join('ui',name),'utf8').replace('<head>','<head><script src="http://astra-plugin.localhost/bridge/astra-bridge.js"></script>');
+      const html=fs.readFileSync(path.join(uiRoot,name),'utf8').replace('<head>','<head><script src="http://astra-plugin.localhost/bridge/astra-bridge.js"></script>');
       await route.fulfill({contentType:'text/html',body:html});
     });
     hostServer=http.createServer((req,res)=>res.writeHead(200,{'Content-Type':'text/html'}).end(`<!doctype html><html><head><style>
@@ -139,6 +143,7 @@ async function main() {
     await expect(panel.locator('[data-tab="settings"]')).toHaveText('Settings');
     await expect(panel.locator('html')).toHaveAttribute('lang','en');
     await expect(panel.locator('#boot-status')).toBeHidden();
+    await expect.poll(()=>panel.locator('.brand-icon').evaluate(img=>img.complete&&img.naturalWidth>0)).toBe(true);
     expect((await call('state')).languagePreference).toBe('auto');
     // The inverse combination: English browser, Russian Astra on startup.
     await page.addInitScript(()=>Object.defineProperty(navigator,'language',{get:()=> 'en-US'}));
@@ -215,7 +220,7 @@ async function main() {
     await expect.poll(()=>background.locator('video').count()).toBe(0);
     await expect.poll(()=>page.evaluate(()=>getComputedStyle(document.getElementById('front')).zIndex)).toBe('300');
     expect(errors).toEqual([]);
-    console.log('PASS: Astra language wins over browser language on first paint; English-only loading; saved override; live language changes and English fallback; 157 cards at 3 viewport sizes; video/image/Web playback; Web consent and properties; inspector scrolling; host layering.');
+    console.log('PASS: brand icon loads; Astra language wins over browser language on first paint; English-only loading; saved override; live language changes and English fallback; 157 cards at 3 viewport sizes; video/image/Web playback; Web consent and properties; inspector scrolling; host layering.');
   } finally {
     if(harness) await harness.shutdown();
     await browser.close();

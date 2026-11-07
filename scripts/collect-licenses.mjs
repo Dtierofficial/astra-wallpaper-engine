@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const rootPkg=JSON.parse(fs.readFileSync('package.json','utf8'));
+const runtime=JSON.parse(fs.readFileSync('scripts/runtime-lock.json','utf8'));
 const queue=Object.keys(rootPkg.dependencies||{});
 const seen=new Map();
 
@@ -30,5 +31,36 @@ for(const name of [...seen.keys()].sort()){
   }
 }
 fs.writeFileSync(path.join(output,'THIRD-PARTY-LICENSES.txt'),blocks.join(''),'utf8');
-fs.writeFileSync(path.join(output,'NOTICE.md'),`# Third-party notices\n\nThe plugin's own code and original artwork are copyright © 2026 DtieR, MIT.\nDependencies keep their own licenses; MIT does not relicense them.\n\n**AstraPlugins — a Minice project — https://minice.ai**\n\nThe unmodified astra-plugin-sdk 0.7.3 is distributed under MPL-2.0.\nIts source is available at https://github.com/mihailinl/AstraPlugins/tree/master/astra-plugin-sdk-ts and as the pinned npm package astra-plugin-sdk@0.7.3.\nIts original NOTICE is reproduced in the complete license text below, including historical references to other repository licenses.\n\n| Component | Version | Declared license |\n|---|---|---|\n${rows.join('\n')}\n\nComplete license and notice texts: [THIRD-PARTY-LICENSES.txt](THIRD-PARTY-LICENSES.txt).\n\nBuild-only tools (Node.js, .NET SDK and reference assemblies, esbuild, Playwright, Bun) are not redistributed as plugin runtimes. The native helper is built from this repository's C# source.\n\nWallpaper Engine, Steam, Astra and Minice are names of their respective owners. This independent integration is not an official product or endorsement. No wallpaper files or proprietary Astra source are bundled.\n`,'utf8');
+fs.writeFileSync(path.join(output,'NOTICE.md'),`# Third-party notices
+
+The plugin's own code and original artwork are copyright © 2026 DtieR, MIT.
+Dependencies keep their own licenses; MIT does not relicense them.
+
+**AstraPlugins — a Minice project — https://minice.ai**
+
+The unmodified astra-plugin-sdk 0.7.3 is distributed under MPL-2.0.
+Its source is available at https://github.com/mihailinl/AstraPlugins/tree/master/astra-plugin-sdk-ts and as the pinned npm package astra-plugin-sdk@0.7.3.
+Its original NOTICE is reproduced in the complete license text below, including historical references to other repository licenses.
+
+| Component | Version | Declared license |
+|---|---|---|
+${rows.join('\n')}
+
+Complete license and notice texts: [THIRD-PARTY-LICENSES.txt](THIRD-PARTY-LICENSES.txt).
+
+## Bundled Node.js runtime
+
+Node.js ${runtime.version} for Windows x64 is redistributed unmodified from the official Node.js release.
+It is licensed under MIT with additional third-party terms for compiled-in components.
+The complete upstream notice is included in [NODE-LICENSE.txt](NODE-LICENSE.txt).
+Binary source: ${runtime.binary.url}
+SHA-256: \`${runtime.binary.sha256}\`.
+Source code: https://github.com/nodejs/node/tree/v${runtime.version}
+The pinned download metadata is also included in \`dist/runtime/runtime.json\`.
+Nothing is downloaded or installed at plugin startup, and no system Node.js installation is changed.
+
+Build-only tools (.NET SDK and reference assemblies, esbuild, Playwright, Bun) are not redistributed as plugin runtimes. The native helper is built from this repository's C# source and uses the Windows .NET Framework 4.8 runtime.
+
+Wallpaper Engine, Steam, Astra and Minice are names of their respective owners. This independent integration is not an official product or endorsement. No wallpaper files or proprietary Astra source are bundled.
+`,'utf8');
 console.log(`Preserved notices for ${rows.length} production packages.`);

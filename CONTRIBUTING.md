@@ -6,10 +6,14 @@ The application is a Node.js Astra plugin with vanilla JS/CSS surfaces. Its orig
 
 Requires Node.js 20+, npm, .NET SDK 8.0.4xx and network access to npm / nuget.org on the first restore. The project is built on Linux by Astra's pinned official release workflow. The native Windows window-state helper is cross-compiled from C# using locked .NET Framework 4.8 reference assemblies; no local prebuilt executable is checked in.
 
+These are **developer requirements**, not installation steps for users. The build also downloads the official Windows x64 Node binary and its complete license using `scripts/runtime-lock.json`. Size and SHA-256 are pinned and checked before writing; subsequent builds reuse only a verified local copy. No runtime download occurs at plugin startup. Update the lock and test the package when updating Node for security fixes. The official workflow still names JavaScript archives `noarch`; the embedded executables make this a Windows-only package.
+
 ```sh
 npm ci
 npm run build
 npm test
+astra-plugin build --target noarch --reproducible
+npm run test:bundle -- wallpaper-engine-1.1.2-noarch.astraplugin
 ```
 
 Windows helper integration test (opens an isolated test window, skips if real Astra UI is open):
@@ -26,6 +30,8 @@ npm run test:ui
 ```
 
 The public tests use a small project-owned bridge fixture reproducing message semantics, not extracted Astra source. A real installed bridge can be used via `ASTRA_WE_BRIDGE_FIXTURE=/path/to/astra-bridge.js` for local compatibility checks. Neither fixture proves compatibility with every release of Astra.
+
+Set `ASTRA_WE_PLUGIN_DIR` to an extracted bundle to run the same browser suite against its compiled backend and UI instead of the source tree. `test:bundle` extracts only the archive, clears Node from PATH, uses a clean profile and a Unicode install path, and checks the embedded runtime, media, Web consent, settings persistence and native helper without development dependencies.
 
 Browser tests replay only generated media/assets because Chromium's latest opaque-frame local-network policy differs from WebView2. Network permissions and browser security must not be disabled to make a test pass.
 

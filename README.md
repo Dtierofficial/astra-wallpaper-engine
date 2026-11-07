@@ -7,11 +7,16 @@
 - **Author:** DtieR
 - **License:** MIT (third-party notices in `ui/legal/NOTICE.md`)
 - **Languages:** English & Russian in a single package (automatically follows Astra's language, with a manual switcher in the header)
-- **Platform:** Windows 10/11 x64 (the bundle target is `noarch` because it contains a small Windows window-visibility helper)
+- **Platform:** Windows 10/11 x64. The official JavaScript release workflow uses the `noarch` archive name; this plugin is Windows-only, not a Linux or ARM build.
+- **No separate Node.js installation:** Node.js 24.22.2 LTS is included in the package. No npm setup, PATH changes, or runtime download at startup.
 
 ---
 
 ## Features
+
+### Requirements
+
+Astra 0.2.7+ on Windows 10/11 x64, Steam and downloaded Wallpaper Engine projects. The small native visibility helper uses .NET Framework 4.8 (included in Windows 11 and current Windows 10 installations). Node.js and JavaScript dependencies are already bundled; users do not need development tools or administrator access to install Node.
 
 ![Gallery preview (English): grid of downloaded wallpapers with type badges, search/filter toolbar, and the right-hand inspector panel showing playback and Wallpaper Engine settings.](docs/assets/gallery-en.png)
 
@@ -36,6 +41,7 @@
 ![Скриншот галереи (Русский): сетка установленных обоев с фильтрами, поиском, избранным и правой панелью свойств.](docs/assets/gallery-ru.png)
 
 ### Что умеет плагин
+- **Node.js уже внутри:** отдельная установка Node/npm и настройка PATH не нужны. Требования: Windows 10/11 x64, Astra 0.2.7+, скачанные обои и .NET Framework 4.8 для остановки при сворачивании.
 - **Один пакет — два языка (RU / EN):** при запуске плагин автоматически включает язык самой Astra (до получения ответа показывается только нейтральный экран загрузки без мигания чужого языка). В шапке галереи также есть ручной переключатель языка.
 - **Автопоиск библиотеки Steam:** автоматически находит папки `steamapps/workshop/content/431960` и локальные проекты `myprojects`. Никакие файлы оригинального Wallpaper Engine не изменяются.
 - **Поддерживаемые форматы:**

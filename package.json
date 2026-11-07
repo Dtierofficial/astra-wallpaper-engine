@@ -1,6 +1,6 @@
 {
   "name": "wallpaper-engine",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Wallpaper Engine integration for Astra UI",
   "license": "MIT",
   "author": "DtieR",
@@ -15,7 +15,8 @@
     "screenshots": "node scripts/render-screenshots.mjs",
     "preview": "node dist/index.js --preview",
     "test": "node --test test/*.test.cjs",
-    "test:ui": "node test/ui.e2e.cjs"
+    "test:ui": "node test/ui.e2e.cjs",
+    "test:bundle": "python test/packaged-runtime.py"
   },
   "engines": {
     "node": ">=20"
