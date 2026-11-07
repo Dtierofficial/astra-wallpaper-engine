@@ -1,0 +1,45 @@
+[plugin]
+id = "wallpaper-engine"
+name = "Wallpaper Engine for Astra"
+version = "1.1.1"
+description = "Browse installed Wallpaper Engine wallpapers in English or Russian. Play video, images and experimental Web wallpapers inside Astra."
+author = "DtieR"
+license = "MIT"
+icon = "icon.svg"
+min_astra_version = "0.2.7"
+call_timeout_secs = 60
+
+[entry]
+command = "node"
+args = ["dist/index.js"]
+runtimes = ["node"]
+
+[capabilities]
+ui_contributions = true
+
+[permissions]
+push_to_ui = { reason = "Stops the wallpaper when the native Astra window is minimized or hidden, and resumes it when the window returns." }
+
+[config]
+schema = """
+{
+  "type": "object",
+  "properties": {
+    "steam_path": {
+      "type": "string",
+      "default": "",
+      "title": "$config.steam_path.title",
+      "description": "$config.steam_path.description"
+    }
+  }
+}
+"""
+
+[platform]
+os = ["windows"]
+arch = []
+
+[bundle]
+schema = "astra.bundle/2"
+target = "noarch"
+executables = ["dist/window-monitor.exe"]

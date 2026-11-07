@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" data-language-loading>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Wallpaper Engine — Astra</title>
+  <style>html[data-language-loading] body>:not(#boot-status){visibility:hidden}#boot-status{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;gap:12px;background:#202125;color:#dce1e6;font:14px 'Segoe UI',sans-serif;z-index:100}#boot-status[hidden]{display:none}</style>
+  <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="layout.css">
+</head>
+<body>
+  <div id="boot-status" role="status"><b>Wallpaper Engine</b><span data-i18n="connecting">Connecting…</span></div>
+  <header>
+    <div class="brand"><img class="brand-icon" src="brand.svg" alt=""><div>Wallpaper Engine<small>FOR ASTRA · BY DtieR</small></div></div>
+    <span class="connection" id="connection" data-i18n="connecting">Connecting…</span>
+    <select id="language" aria-label="Interface language"><option value="auto" data-i18n="automatic">Automatic (Astra)</option><option value="en">English</option><option value="ru">Русский</option></select>
+    <button id="refresh" data-i18n="refresh">Refresh</button>
+  </header>
+  <nav>
+    <button class="tab active" data-tab="all"><span data-i18n="installed">Installed</span> <span id="count">0</span></button>
+    <button class="tab" data-tab="favorites" data-i18n="favorites">Favorites</button>
+    <button class="tab" data-tab="settings" data-i18n="settings">Settings</button>
+    <div class="nav-end" data-i18n="localLibrary">Local library · Steam</div>
+  </nav>
+  <main id="library">
+    <section class="browser">
+      <div class="toolbar">
+        <label class="search">⌕ <input id="search" placeholder="Search wallpapers…" aria-label="Search wallpapers"></label>
+        <select id="type" aria-label="Wallpaper type"><option value="all" data-i18n="allTypes">All types</option><option value="video" data-i18n="video">Video</option><option value="image" data-i18n="image">Images / GIF</option><option value="scene" data-i18n="scene">Scenes</option><option value="web" data-i18n="web">Web</option></select>
+        <select id="sort" aria-label="Sort order"><option value="name" data-i18n="byName">By name</option><option value="date" data-i18n="byDate">Recently modified</option></select>
+        <input id="size" aria-label="Card size" type="range" min="130" max="240" value="165">
+      </div>
+      <div class="filter-row"><span id="results"></span><label><input id="compatible" type="checkbox"> <span data-i18n="compatibleOnly">Playable only</span></label></div>
+      <div id="grid" class="grid" role="list" aria-label="Installed wallpapers"></div>
+      <div id="empty" hidden data-i18n="empty">No results.</div>
+    </section>
+    <aside id="inspector"><div class="placeholder"><span>▧</span><h2 data-i18n="placeholderTitle">Your wallpapers. Inside Astra.</h2><p data-i18n="placeholderBody">Select a wallpaper to inspect it.</p><p class="muted" data-i18n="placeholderHint"></p></div></aside>
+  </main>
+  <section id="settings" hidden>
+    <h1 data-i18n="connectionSettings">Connection settings</h1>
+    <div class="setting-card"><h2 data-i18n="language">Interface language</h2><p data-i18n="languageHint"></p></div>
+    <div class="setting-card"><h2 data-i18n="steamLibraries">Steam libraries</h2><div id="roots"></div><p data-i18n="pathsHint"></p><button id="rescan" data-i18n="rescan">Rescan library</button></div>
+    <div class="setting-card"><h2 data-i18n="performance">Performance</h2><p data-i18n="performanceHint"></p><p data-i18n="performanceNote"></p><p id="native-status"></p></div>
+    <div class="setting-card"><h2 data-i18n="formats">Format support</h2><p data-i18n="formatsHint"></p><p data-i18n="compatibilityHint"></p></div>
+  </section>
+  <footer><span id="status"></span><button id="clear" data-i18n="clear">Remove Astra background</button></footer>
+  <div id="toast" role="status" hidden></div>
+  <script src="i18n.js"></script><script src="app.js"></script>
+</body>
+</html>

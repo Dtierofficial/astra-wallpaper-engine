@@ -1,0 +1,6 @@
+{
+  "listing.name": "Wallpaper Engine для Astra",
+  "listing.description": "Галерея WE на русском и английском. Видео, картинки и экспериментальные локальные Web-обои. Рендер останавливается, когда Astra скрыта или свёрнута.",
+  "config.steam_path.title": "Свой путь к Steam",
+  "config.steam_path.description": "Оставьте пустым для автоматического поиска через реестр Windows и libraryfolders.vdf."
+}

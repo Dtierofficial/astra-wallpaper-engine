@@ -1,0 +1,12 @@
+node_modules/
+tools/
+dist/
+data/
+diagnostics/
+test/conformance.json
+*.astraplugin
+native/**/bin/
+native/**/obj/
+test-results/
+playwright-report/
+*.tmp

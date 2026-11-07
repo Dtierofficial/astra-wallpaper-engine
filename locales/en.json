@@ -1,0 +1,6 @@
+{
+  "config.steam_path.description": "Leave empty for automatic detection using Windows Registry and Steam libraryfolders.vdf.",
+  "config.steam_path.title": "Custom Steam path",
+  "listing.description": "Browse installed Wallpaper Engine wallpapers in English or Russian. Play video, images and experimental Web wallpapers inside Astra.",
+  "listing.name": "Wallpaper Engine for Astra"
+}

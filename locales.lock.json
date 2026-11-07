@@ -1,0 +1,12 @@
+{
+  "locales": {
+    "ru": {
+      "config.steam_path.description": "be0107604469",
+      "config.steam_path.title": "c52945ab5e4f",
+      "listing.description": "6d2adc10ca54",
+      "listing.name": "01d19108e2d6"
+    }
+  },
+  "schema": "astra.plugin.locales/1",
+  "source": "en"
+}

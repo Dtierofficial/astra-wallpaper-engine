@@ -1,0 +1,30 @@
+/* The host may auto-size an iframe to its contents. A bounded viewport
+   prevents the gallery from stretching the entire Astra page. */
+html {height:100%;overflow:hidden;}
+body {height:100vh;height:100dvh;min-height:0;overflow:hidden;display:grid;grid-template-rows:76px 48px minmax(0,1fr) 47px;}
+header,nav,footer {min-width:0;}
+main#library {height:100%;min-height:0;overflow:hidden;}
+.browser {height:100%;min-height:0;overflow:hidden;}
+.toolbar,.filter-row {flex-shrink:0;}
+.grid {flex:1;min-height:0;grid-auto-rows:max-content;overflow-y:auto;overscroll-behavior:contain;}
+.tile {min-height:140px;align-self:start;}
+aside#inspector {height:100%;min-height:0;overflow-y:auto;overscroll-behavior:contain;}
+#settings {min-height:0;overflow:auto;max-width:none;}
+.apply-row {position:sticky;top:0;z-index:2;background:#292c31;padding:10px 0;}
+.brand {flex-shrink:0;}
+.brand-icon {display:block;width:46px;height:46px;flex-shrink:0;}
+header {gap:12px;}
+header select {max-width:170px;min-width:0;}
+.property input:not([type=checkbox]),.property select {width:140px;max-width:55%;min-width:0;background:#191d23;border:1px solid #505761;color:#e5e7ea;padding:5px;}
+.consent-row {display:flex;gap:8px;align-items:flex-start;color:#aab8c6;font-size:12px;line-height:1.6;}
+@media(max-width:950px){.connection{display:none}header .brand{font-size:18px}header{padding:0 12px}header select{margin-left:auto;max-width:150px}}
+@media(max-width:620px){
+ main#library {grid-template-columns:minmax(0,1fr) 245px;height:100%;}
+ .grid {max-height:none;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));}
+ .toolbar {padding:9px;gap:5px;}
+ .toolbar select {max-width:120px;}
+ .grid {padding:0 8px 8px;gap:8px;}
+ .details {padding:12px;}
+ .hero {height:130px;}
+ .field {flex-wrap:wrap;}
+}

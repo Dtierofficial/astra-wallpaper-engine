@@ -1,0 +1,32 @@
+{
+  "name": "wallpaper-engine",
+  "version": "1.1.1",
+  "description": "Wallpaper Engine integration for Astra UI",
+  "license": "MIT",
+  "author": "DtieR",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dtierofficial/astra-wallpaper-engine.git"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "brand": "node scripts/render-branding.mjs",
+    "screenshots": "node scripts/render-screenshots.mjs",
+    "preview": "node dist/index.js --preview",
+    "test": "node --test test/*.test.cjs",
+    "test:ui": "node test/ui.e2e.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.10.0",
+    "@grpc/proto-loader": "^0.7.0",
+    "astra-plugin-sdk": "^0.7.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "esbuild": "^0.28.2"
+  }
+}
